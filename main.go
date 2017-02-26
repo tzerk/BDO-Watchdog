@@ -25,15 +25,14 @@ type Config struct {
 	StayAlive bool
 	Process string
 	TimeBetweenChecksInS int
+	KillOnDC bool
+	ShutdownOnDC bool
 }
 
 // Variables
 var STATUS bool = false
 var CONNECTION bool = false
 var PID int
-var KILLONDC = false
-var SHUTDOWNONDC = false
-
 
 func main() {
 
@@ -53,9 +52,11 @@ func main() {
 				"message: BDO disconnected \r\n" +
 				"\r\n" +
 				"## Program Settings\r\n" +
-				"staylive: false\r\n" +
+				"stayalive: false\r\n" +
 				"process: BlackDesert64.exe\r\n" +
-				"timebetweenchecksins: 60"
+				"timebetweenchecksins: 60" +
+				"killondc: true" +
+				"shutdownondc: false"
 		ioutil.WriteFile("config.yml", []byte(defconf), os.FileMode(int(0666)))
 		panic(err)
 	}
@@ -80,20 +81,6 @@ func main() {
 		sep := ui.NewHorizontalSeparator()
 		pb := ui.NewProgressBar()
 
-		// Checkbox: kill process after disconnect
-		cb_killProcess := ui.NewCheckbox("kill process")
-		cb_killProcess.SetChecked(true)
-		cb_killProcess.OnToggled(func(*ui.Checkbox) {
-			KILLONDC = !KILLONDC
-		})
-
-		// Checkbox: shutdown computer after disconnect
-		cb_shutdown := ui.NewCheckbox("shutdown PC")
-		cb_shutdown.SetChecked(false)
-		cb_killProcess.OnToggled(func(*ui.Checkbox) {
-			SHUTDOWNONDC = !SHUTDOWNONDC
-		})
-
 		// Append all UI elements to the box container
 		box.Append(label_Process, false)
 		box.Append(label_Status, false)
@@ -101,9 +88,6 @@ func main() {
 		box.Append(label_Connection, false)
 		box.Append(label_Update, false)
 		box.Append(sep, false)
-		box.Append(ui.NewLabel("In case of disconnect..."), false)
-		box.Append(cb_killProcess, false)
-		box.Append(cb_shutdown, false)
 		box.Append(pb, true)
 
 		window.SetChild(box)
@@ -133,37 +117,6 @@ func observer(
 	for {
 		label_Update.SetText("")
 
-		//// EXIT CONDITION
-		//-----------------
-		// If the process is running, but no longer connected we trigger the following actions
-		if STATUS && !CONNECTION {
-
-			// Use the Telegram API to send a message
-			send_TelegramMessage(config)
-
-			// Optional: kill the monitored process if it is disconnected
-			if KILLONDC {
-				proc, err := os.FindProcess(PID)
-				if err != nil {
-					log.Println(err)
-				}
-				// Kill the process
-				proc.Kill()
-				time.Sleep(5 * time.Second)
-			}
-
-			// Optional: shutdown the computer if the monitored process is disconnected
-			if SHUTDOWNONDC {
-				exec.Command("cmd", "/C", "shutdown", "/s").Run()
-			}
-
-			// Optional (YAML file, default: false): keep this program open even if
-			// the process is disconnected
-			if !config.StayAlive {
-				os.Exit(1)
-			}
-		}
-
 		//// PROCESS
 		//----------
 		p, err := ps.Processes()
@@ -173,8 +126,6 @@ func observer(
 
 		//// PID
 		//------
-		var PID int
-
 		for _, v := range p {
 			if v.Executable() == config.Process {
 				PID = v.Pid()
@@ -221,15 +172,52 @@ func observer(
 				CONNECTION = false
 				label_Connection.SetText("  Connection: Offline" )
 			})
-			wait(config, label_Update, pb)
-			continue
+		} else {
+			// Update labels
+			ui.QueueMain(func () {
+				CONNECTION = true
+				label_Connection.SetText("  Connection: online")
+			})
 		}
 
-		// Update labels
-		ui.QueueMain(func () {
-			CONNECTION = true
-			label_Connection.SetText("  Connection: online")
-		})
+		//// EXIT CONDITION
+		//-----------------
+		// If the process is running, but no longer connected we trigger the following actions
+		if STATUS && !CONNECTION {
+
+			// Use the Telegram API to send a message
+			send_TelegramMessage(config)
+
+			// Optional: kill the monitored process if it is disconnected
+			/*
+			if config.KillOnDC {
+				fmt.Println(PID)
+				proc, err := os.FindProcess(PID)
+				fmt.Println(proc)
+				if err != nil {
+					log.Println(err)
+				}
+				// Kill the process
+				kill_err := proc.Kill()
+				if kill_err != nil {
+					log.Println(err)
+				}
+
+				time.Sleep(5 * time.Second)
+			}
+			*/
+
+			// Optional: shutdown the computer if the monitored process is disconnected
+			if config.ShutdownOnDC {
+				exec.Command("cmd", "/C", "shutdown", "/s").Run()
+			}
+
+			// Optional (YAML file, default: false): keep this program open even if
+			// the process is disconnected
+			if !config.StayAlive {
+				os.Exit(1)
+			}
+		}
 
 		// Wait x seconds before next iteration
 		wait(config, label_Update, pb)

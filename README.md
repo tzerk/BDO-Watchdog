@@ -41,5 +41,16 @@ timebetweenchecksins | Time in seconds to wait between each polling interval
 5. Retrieve your personal user/chat id by entering `https://api.telegram.org/bot<BOT_ID>:<TOKEN>/getUpdates`. You will see a JSON object that contains `"from":{"id":12345678,[...]"`. The id is the **chat id** you will need.
 6. Finally, open `config.yml` and copy the **bot id**, **token** and **chat id** in the corresponding fields. Done!
 
+## Compiling BDO Watchdog from source
+
+If you want to compile this program yourself you will need the following programs/tools:
+
+* [Go](https://golang.org/doc/install)
+* (optional) [JetBrains Gogland IDE](https://www.jetbrains.com/go/)
+* [Mingw-w64](https://mingw-w64.org/doku.php)
+* (optional) [rcedit](https://github.com/electron/rcedit/releases)
+
+If everything is set up correctly and all executables are in `PATH` clone this repository, open a command shell in the root directory and enter `make`. Alternatively, you can also just run `go build`, but then the command shell window will not be hidden and the executable will not have a fancy icon.
+
 # Licence
 MIT

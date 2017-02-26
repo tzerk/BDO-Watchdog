@@ -15,7 +15,7 @@ A simple Go program that monitors the BlackDesert64.exe process and its network 
 If the process is running, but its PID is no longer found in the output of `netstat` it then does the following:
 
 - Send a Telegram message using a [URL query string](https://core.telegram.org/bots/api#making-requests)
-- (optionally) tries to kill the process
+- (optionally) tries to kill the process (requires admin rights)
 - (optionally) shuts down the computer (`cmd /C shutdown /s`)
 
 ## Configuration
@@ -32,7 +32,7 @@ stayalive | By default, the program closes if it has detected a disconnect
 process | The process to be monitored, defaults to `BlackDesert64.exe`
 timebetweenchecksins | Time in seconds to wait between each polling interval
 shutdownondc | Shut down the computer after the client disconnected
-killondc | Kill the process after it disconnected (*CURRENTLY DISABLED*)
+killondc | Kill the process after it disconnected (requires the executable to be run with admin rights!)
 
 ## Setting up the Telegram Bot
 

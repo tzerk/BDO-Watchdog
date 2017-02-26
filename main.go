@@ -117,6 +117,45 @@ func observer(
 	for {
 		label_Update.SetText("")
 
+		//// EXIT CONDITION
+		//-----------------
+		// If the process is running, but no longer connected we trigger the following actions
+		if STATUS && !CONNECTION {
+
+			// Use the Telegram API to send a message
+			send_TelegramMessage(config)
+
+			// Optional: kill the monitored process if it is disconnected
+			/*
+			if config.KillOnDC {
+				fmt.Println(PID)
+				proc, err := os.FindProcess(PID)
+				fmt.Println(proc)
+				if err != nil {
+					log.Println(err)
+				}
+				// Kill the process
+				kill_err := proc.Kill()
+				if kill_err != nil {
+					log.Println(err)
+				}
+
+				time.Sleep(5 * time.Second)
+			}
+			*/
+
+			// Optional: shutdown the computer if the monitored process is disconnected
+			if config.ShutdownOnDC {
+				exec.Command("cmd", "/C", "shutdown", "/s").Run()
+			}
+
+			// Optional (YAML file, default: false): keep this program open even if
+			// the process is disconnected
+			if !config.StayAlive {
+				os.Exit(1)
+			}
+		}
+
 		//// PROCESS
 		//----------
 		p, err := ps.Processes()
@@ -178,45 +217,6 @@ func observer(
 				CONNECTION = true
 				label_Connection.SetText("  Connection: online")
 			})
-		}
-
-		//// EXIT CONDITION
-		//-----------------
-		// If the process is running, but no longer connected we trigger the following actions
-		if STATUS && !CONNECTION {
-
-			// Use the Telegram API to send a message
-			send_TelegramMessage(config)
-
-			// Optional: kill the monitored process if it is disconnected
-			/*
-			if config.KillOnDC {
-				fmt.Println(PID)
-				proc, err := os.FindProcess(PID)
-				fmt.Println(proc)
-				if err != nil {
-					log.Println(err)
-				}
-				// Kill the process
-				kill_err := proc.Kill()
-				if kill_err != nil {
-					log.Println(err)
-				}
-
-				time.Sleep(5 * time.Second)
-			}
-			*/
-
-			// Optional: shutdown the computer if the monitored process is disconnected
-			if config.ShutdownOnDC {
-				exec.Command("cmd", "/C", "shutdown", "/s").Run()
-			}
-
-			// Optional (YAML file, default: false): keep this program open even if
-			// the process is disconnected
-			if !config.StayAlive {
-				os.Exit(1)
-			}
 		}
 
 		// Wait x seconds before next iteration

@@ -52,5 +52,9 @@ If you want to compile this program yourself you will need the following program
 
 If everything is set up correctly and all executables are in `PATH` clone this repository, open a command shell in the root directory and enter `make`. Alternatively, you can also just run `go build`, but then the command shell window will not be hidden and the executable will not have a fancy icon.
 
+## Contributing
+
+This is a free time project as a means to learn the Go language and not some elaborate venture. By that, I cannot promise any updates or bugfixes. Feel free to fork this project and/or to suggest changes via pull requests.
+
 # Licence
 MIT

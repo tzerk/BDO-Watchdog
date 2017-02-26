@@ -31,6 +31,8 @@ message | The message your bot sends in case of a disconnect
 stayalive | By default, the program closes if it has detected a disconnect
 process | The process to be monitored, defaults to `BlackDesert64.exe`
 timebetweenchecksins | Time in seconds to wait between each polling interval
+shutdownondc | Shut down the computer after the client disconnected
+killondc | Kill the process after it disconnected (*CURRENTLY DISABLED*)
 
 ## Setting up the Telegram Bot
 

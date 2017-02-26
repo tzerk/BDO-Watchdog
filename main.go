@@ -125,12 +125,17 @@ func observer(
 			// Use the Telegram API to send a message
 			send_TelegramMessage(config)
 
+			// Optional: shutdown the computer if the monitored process is disconnected
+			if config.ShutdownOnDC {
+				exec.Command("cmd", "/C", "shutdown", "/s").Run()
+			}
+
 			// Optional: kill the monitored process if it is disconnected
-			/*
+			// requires elevated rights --> start .exe as administrator
 			if config.KillOnDC {
-				fmt.Println(PID)
+
 				proc, err := os.FindProcess(PID)
-				fmt.Println(proc)
+
 				if err != nil {
 					log.Println(err)
 				}
@@ -141,12 +146,6 @@ func observer(
 				}
 
 				time.Sleep(5 * time.Second)
-			}
-			*/
-
-			// Optional: shutdown the computer if the monitored process is disconnected
-			if config.ShutdownOnDC {
-				exec.Command("cmd", "/C", "shutdown", "/s").Run()
 			}
 
 			// Optional (YAML file, default: false): keep this program open even if

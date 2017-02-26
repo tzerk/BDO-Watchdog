@@ -1,4 +1,4 @@
-TARGET="BDO Watchdog.exe"
+TARGET="BDO-Watchdog.exe"
 VERSION=1.0.0
 LDFLAGS=-ldflags="-H windowsgui"
 

@@ -22,3 +22,12 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# JetBrains Gogland files
+*.xml
+*.iml
+
+# Project specific files
+config.yml
+blackSpirit.png
+

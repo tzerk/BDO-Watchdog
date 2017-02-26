@@ -27,6 +27,7 @@ type Config struct {
 	TimeBetweenChecksInS int
 	KillOnDC bool
 	ShutdownOnDC bool
+	KillCoherentUI bool
 }
 
 // Variables
@@ -55,8 +56,11 @@ func main() {
 				"stayalive: false\r\n" +
 				"process: BlackDesert64.exe\r\n" +
 				"timebetweenchecksins: 60\r\n" +
+				"\r\n" +
+				"# These settings require the .exe to be run with admin rights! \r\n" +
 				"killondc: true\r\n" +
-				"shutdownondc: false"
+				"shutdownondc: false\r\n" +
+				"killcoherentui: false"
 		ioutil.WriteFile("config.yml", []byte(defconf), os.FileMode(int(0666)))
 		panic(err)
 	}
@@ -114,6 +118,33 @@ func observer(
 	label_Update *ui.Label,
 	pb *ui.ProgressBar) {
 
+	// KILL CoherentUI_Host.exe
+	if config.KillCoherentUI {
+
+		// Find process(es)
+		chp, err := ps.Processes()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Find PID and kill
+		for _, v := range chp {
+			if v.Executable() == "CoherentUI_Host.exe" {
+				proc, err := os.FindProcess(v.Pid())
+
+				if err != nil {
+					log.Println(err)
+				}
+				// Kill the process
+				kill_err := proc.Kill()
+				if kill_err != nil {
+					log.Println(err)
+				}
+			}
+		}
+	}
+
+	// INFINITE MAIN LOOP
 	for {
 		label_Update.SetText("")
 

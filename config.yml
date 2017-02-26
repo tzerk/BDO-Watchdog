@@ -1,0 +1,10 @@
+## Telegram Bot Settings
+token: 
+botid: 
+chatid: 
+message: BDO disconnected
+
+## Program Settings
+staylive: false
+process: BlackDesert64.exe
+timebetweenchecksins: 5

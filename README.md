@@ -32,5 +32,14 @@ stayalive | By default, the program closes if it has detected a disconnect
 process | The process to be monitored, defaults to `BlackDesert64.exe`
 timebetweenchecksins | Time in seconds to wait between each polling interval
 
+## Setting up the Telegram Bot
+
+1. [Download Telegram](https://telegram.org/) for your favorite platform
+2. Initiate chat with the [`BotFather`](https://telegram.me/botfather)
+3. Enter `/newbot` and follow instructions. If successful, you will receive the **bot id** and **token** (in the form of `<botid:token>`).
+4. Initiate a conversation with your bot by entering `telegram.me/<bot_username>` in your browser
+5. Retrieve your personal user/chat id by entering `https://api.telegram.org/bot<BOT_ID>:<TOKEN>/getUpdates`. You will see a JSON object that contains `"from":{"id":12345678,[...]"`. The id is the **chat id** you will need.
+6. Finally, open `config.yml` and copy the **bot id**, **token** and **chat id** in the corresponding fields. Done!
+
 # Licence
 MIT

@@ -9,7 +9,5 @@ stayalive: false
 process: BlackDesert64.exe
 timebetweenchecksins: 60
 shutdownondc: false
-
-## Currently disabled
 killondc: true
 

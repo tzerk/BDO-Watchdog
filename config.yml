@@ -7,7 +7,7 @@ message: BDO disconnected
 ## Program Settings
 stayalive: false
 process: BlackDesert64.exe
-timebetweenchecksins: 5
+timebetweenchecksins: 60
 shutdownondc: false
 
 ## Currently disabled

@@ -54,8 +54,8 @@ func main() {
 				"## Program Settings\r\n" +
 				"stayalive: false\r\n" +
 				"process: BlackDesert64.exe\r\n" +
-				"timebetweenchecksins: 60" +
-				"killondc: true" +
+				"timebetweenchecksins: 60\r\n" +
+				"killondc: true\r\n" +
 				"shutdownondc: false"
 		ioutil.WriteFile("config.yml", []byte(defconf), os.FileMode(int(0666)))
 		panic(err)

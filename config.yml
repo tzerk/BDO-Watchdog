@@ -5,6 +5,6 @@ chatid:
 message: BDO disconnected
 
 ## Program Settings
-staylive: false
+stayalive: false
 process: BlackDesert64.exe
 timebetweenchecksins: 5

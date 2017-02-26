@@ -8,6 +8,9 @@ message: BDO disconnected
 stayalive: false
 process: BlackDesert64.exe
 timebetweenchecksins: 60
+
+# These settings require the .exe to be run with admin rights! 
+killondc: false
 shutdownondc: false
-killondc: true
+killcoherentui: false
 

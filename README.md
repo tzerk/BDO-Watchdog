@@ -4,7 +4,7 @@ A simple Go program that monitors the BlackDesert64.exe process and its network 
 
 ## Screenshot 
 
-![](http://i68.tinypic.com/5tuuld.png)
+![](http://i.imgur.com/LJiD11n.png)
 
 ## How it works
 

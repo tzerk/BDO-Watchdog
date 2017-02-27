@@ -263,7 +263,7 @@ func wait(config Config, label_Update *ui.Label, pb *ui.ProgressBar) {
 		tstep = 1
 	} // otherwise division by 0
 	for i := 0; i <= tstep; i++ {
-		pb.SetValue(100/tstep * i)
+		pb.SetValue(int(100/float32(tstep) * float32(i + 1)))
 		label_Update.SetText("  Next update in... " + strconv.Itoa(tstep - i) + " s")
 		time.Sleep(1 * time.Second)
 	}

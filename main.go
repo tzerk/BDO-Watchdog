@@ -92,6 +92,12 @@ func main() {
 		label_Update := ui.NewLabel("")
 
 		box := ui.NewVerticalBox()
+
+		tbtn := ui.NewButton("Send Telegram test message")
+		tbtn.OnClicked(func(*ui.Button) {
+			send_TelegramMessage(config)
+		})
+
 		sep := ui.NewHorizontalSeparator()
 		pb := ui.NewProgressBar()
 
@@ -101,6 +107,7 @@ func main() {
 		box.Append(label_PID, false)
 		box.Append(label_Connection, false)
 		box.Append(label_Update, false)
+		box.Append(tbtn, false)
 		box.Append(sep, false)
 		box.Append(pb, true)
 

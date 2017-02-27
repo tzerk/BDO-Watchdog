@@ -47,7 +47,7 @@ func main() {
 	}
 	newex := strings.Replace(ex, "BDO-Watchdog.exe", "config.yml", -1)
 	// This is necessary for dynamic builds in Jetbrains Gogland IDE
-	newex = strings.Replace(ex, "Application.exe", "config.yml", -1)
+	//newex = strings.Replace(ex, "Application.exe", "config.yml", -1)
 
 	var config Config
 	source, err := ioutil.ReadFile(newex)

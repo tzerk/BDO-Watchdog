@@ -157,8 +157,13 @@ func observer(
 				if err != nil {
 					log.Println(err)
 				}
+
+				defer func() {
+					recover() // 1
+					return
+				}()
 				// Kill the process
-				defer proc.Kill()
+				proc.Kill()
 			}
 		}
 	}
@@ -189,13 +194,18 @@ func observer(
 				if err != nil {
 					log.Println(err)
 				}
+
+				defer func() {
+					recover() // 1
+					return
+				}()
 				// Kill the process
-				defer proc.Kill()
+				proc.Kill()
 
 				time.Sleep(5 * time.Second)
 			}
 
-			// Optional (YAML file, default: false): keep this program open even if
+			// Optional (YAML file, default: false): keep ts program open even if
 			// the process is disconnected
 			if !config.StayAlive {
 				os.Exit(1)

@@ -4,10 +4,11 @@ A simple Go program that monitors the BlackDesert64.exe process and its network 
 
 ## Screenshot 
 
-![](http://i.imgur.com/LJiD11n.png)
+![](http://i.imgur.com/zhCOWzQ.png)
 
 ## How it works
 
+0. (optionally) Tries to kill all `CoherentUI_Host.exe` processes (requires admin rights)
 1. Check if the designated [process is currently running](https://github.com/mitchellh/go-ps)
 2. Obtain the process ID (PID)
 3. Run `cmd.exe netstat -aon` and find the PID its output
@@ -33,6 +34,7 @@ process | The process to be monitored, defaults to `BlackDesert64.exe`
 timebetweenchecksins | Time in seconds to wait between each polling interval
 shutdownondc | Shut down the computer after the client disconnected
 killondc | Kill the process after it disconnected (requires the executable to be run with admin rights!)
+killcoherentui | Kill all `CoherentUI_Host.exe` processes (requires admin rights)
 
 ## Setting up the Telegram Bot
 

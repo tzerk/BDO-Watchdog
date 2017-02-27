@@ -32,6 +32,7 @@ type Config struct {
 }
 
 // Variables
+const VERSION = "0.1.4"
 var STATUS bool = false
 var CONNECTION bool = false
 var PID int
@@ -84,7 +85,7 @@ func main() {
 	//// GUI
 	//--------------------------------------------------------------------------------------------------------------
 	ui := ui.Main(func() {
-		window := ui.NewWindow("BDO Watchdog v0.1.4", 300, 80, false)
+		window := ui.NewWindow("BDO Watchdog v" + VERSION, 300, 80, false)
 
 		label_Process := ui.NewLabel("  Process: " + config.Process)
 		label_Status := ui.NewLabel("  Initializing...")
@@ -127,6 +128,11 @@ func main() {
 		box_settings.Append(ui.NewLabel("Kill process after disconnect: " + strconv.FormatBool(config.KillOnDC)), false)
 		box_settings.Append(ui.NewLabel("Shutdown PC after disconnect: " + strconv.FormatBool(config.ShutdownOnDC) ), false)
 		box_settings.Append(ui.NewLabel("Kill CoherenUI_Host.exe: " + strconv.FormatBool(config.KillCoherentUI)), false)
+
+		// Append UI elements for about tab
+		box_about.Append(ui.NewLabel("Version " + VERSION), false)
+		box_about.Append(ui.NewLabel("Check https://github.com/tzerk/BDO-Watchdog/releases/ for updates"), false)
+
 
 		tab.Append("Main", box_main)
 		tab.Append("Settings", box_settings)

@@ -13,7 +13,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"syscall"
-	"fmt"
+	"strings"
 )
 
 // Telegram and program settings (config.yml)
@@ -41,8 +41,17 @@ func main() {
 	////  SETTINGS
 	//--------------------------------------------------------------------------------------------------------------
 	// YAML PARSING
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	newex := strings.Replace(ex, "BDO-Watchdog.exe", "config.yml", -1)
+	// This is necessary for dynamic builds in Jetbrains Gogland IDE
+	newex = strings.Replace(ex, "Application.exe", "config.yml", -1)
+
 	var config Config
-	source, err := ioutil.ReadFile("./config.yml")
+	source, err := ioutil.ReadFile(newex)
+
 	if err != nil {
 		// in theory, using yml.Marshal() would be more elegant, but we want to preserve the yaml comments
 		// as well as set some default values/hints
@@ -264,7 +273,6 @@ func wait(config Config, label_Update *ui.Label, pb *ui.ProgressBar) {
 	} // otherwise division by 0
 	for i := 0; i <= tstep; i++ {
 		pb.SetValue(int(100/float32(tstep) * float32(i + 1)))
-		fmt.Println(tstep, ", ", i, " = ", int32(100/float32(tstep) * float32(i + 1)))
 		label_Update.SetText("  Next update in... " + strconv.Itoa(tstep - i) + " s")
 		time.Sleep(1 * time.Second)
 	}

@@ -56,6 +56,7 @@ func main() {
 		// in theory, using yml.Marshal() would be more elegant, but we want to preserve the yaml comments
 		// as well as set some default values/hints
 		defconf :=
+				"## Get updates here: https://github.com/tzerk/BDO-Watchdog/releases/\r\n" +
 				"## Telegram Bot Settings\r\n" +
 				"token: \r\n" +
 				"botid: \r\n" +
@@ -83,7 +84,7 @@ func main() {
 	//// GUI
 	//--------------------------------------------------------------------------------------------------------------
 	ui := ui.Main(func() {
-		window := ui.NewWindow("BDO Watchdog", 300, 80, false)
+		window := ui.NewWindow("BDO Watchdog v0.1.4", 300, 80, false)
 
 		label_Process := ui.NewLabel("  Process: " + config.Process)
 		label_Status := ui.NewLabel("  Initializing...")

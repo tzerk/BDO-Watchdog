@@ -95,6 +95,11 @@ func main() {
 		box.Append(sep, false)
 		box.Append(pb, true)
 
+		// If this tool requires admin rights add a text label to inform the user
+		if config.KillOnDC || config.KillCoherentUI {
+			box.Append(ui.NewLabel("Make sure to have started this program with admin rights!"), true)
+		}
+
 		window.SetChild(box)
 		window.OnClosing(func(*ui.Window) bool {
 			ui.Quit()

@@ -13,6 +13,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"syscall"
+	"fmt"
 )
 
 // Telegram and program settings (config.yml)
@@ -41,7 +42,7 @@ func main() {
 	//--------------------------------------------------------------------------------------------------------------
 	// YAML PARSING
 	var config Config
-	source, err := ioutil.ReadFile("config.yml")
+	source, err := ioutil.ReadFile("./config.yml")
 	if err != nil {
 		// in theory, using yml.Marshal() would be more elegant, but we want to preserve the yaml comments
 		// as well as set some default values/hints
@@ -61,7 +62,7 @@ func main() {
 				"killondc: true\r\n" +
 				"shutdownondc: false\r\n" +
 				"killcoherentui: false"
-		ioutil.WriteFile("config.yml", []byte(defconf), os.FileMode(int(0666)))
+		ioutil.WriteFile("config.yml", []byte(defconf), os.FileMode(int(0777)))
 		panic(err)
 	}
 	err = yaml.Unmarshal(source, &config)
@@ -136,10 +137,7 @@ func observer(
 					log.Println(err)
 				}
 				// Kill the process
-				kill_err := proc.Kill()
-				if kill_err != nil {
-					log.Println(err)
-				}
+				defer proc.Kill()
 			}
 		}
 	}
@@ -171,10 +169,7 @@ func observer(
 					log.Println(err)
 				}
 				// Kill the process
-				kill_err := proc.Kill()
-				if kill_err != nil {
-					log.Println(err)
-				}
+				defer proc.Kill()
 
 				time.Sleep(5 * time.Second)
 			}
@@ -264,6 +259,7 @@ func wait(config Config, label_Update *ui.Label, pb *ui.ProgressBar) {
 	} // otherwise division by 0
 	for i := 0; i <= tstep; i++ {
 		pb.SetValue(int(100/float32(tstep) * float32(i + 1)))
+		fmt.Println(tstep, ", ", i, " = ", int32(100/float32(tstep) * float32(i + 1)))
 		label_Update.SetText("  Next update in... " + strconv.Itoa(tstep - i) + " s")
 		time.Sleep(1 * time.Second)
 	}

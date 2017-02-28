@@ -29,7 +29,10 @@ func Watchdog(
 
 	// KILL CoherentUI_Host.exe
 	if config.KillCoherentUI {
-		killCoherentUI()
+		err := killCoherentUI()
+		if err != nil {
+			label_Status.SetText(err.Error())
+		}
 	}
 
 	// INFINITE MAIN LOOP

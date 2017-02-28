@@ -9,12 +9,17 @@ import (
 
 // Variables
 const VERSION = "0.1.5"
+var errmsg string
 
 func main() {
 
 
 	// SETTINGS
-	config := Read_Settings(os.Executable())
+	exp, _ := os.Executable()
+	config, err := Read_Settings(exp)
+	if err != nil {
+		errmsg = err.Error()
+	}
 
 	//// GUI
 	//--------------------------------------------------------------------------------------------------------------
@@ -23,8 +28,8 @@ func main() {
 
 		label_Process := ui.NewLabel("  Process: " + config.Process)
 		label_Status := ui.NewLabel("  Initializing...")
-		label_PID := ui.NewLabel("-")
-		label_Connection := ui.NewLabel("-")
+		label_PID := ui.NewLabel("")
+		label_Connection := ui.NewLabel("")
 		label_Update := ui.NewLabel("")
 
 		//box := ui.NewVerticalBox()
@@ -88,7 +93,12 @@ func main() {
 			return true
 		})
 		window.Show()
-		go Watchdog(config, label_Status, label_PID, label_Connection, label_Update, pb)
+
+		if (errmsg) != "" {
+			label_Status.SetText("  " + errmsg)
+		} else {
+			go Watchdog(config, label_Status, label_PID, label_Connection, label_Update, pb)
+		}
 	})
 	if ui != nil {
 		panic(ui)

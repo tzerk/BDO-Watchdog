@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"gopkg.in/yaml.v2"
+	"errors"
 )
 
 // Telegram and program settings (config.yml)
@@ -22,7 +23,13 @@ type Config struct {
 	KillCoherentUI bool
 }
 
-func Read_Settings(ex string, err error) Config {
+func Read_Settings(ex string) (config Config, err error) {
+
+	defer func() {
+		if r := recover(); r != nil {
+			err = errors.New("Unable to find config.yml, created a new one.")
+		}
+	}()
 
 	////  SETTINGS
 	//--------------------------------------------------------------------------------------------------------------
@@ -31,7 +38,6 @@ func Read_Settings(ex string, err error) Config {
 	// This is necessary for dynamic builds in Jetbrains Gogland IDE
 	//newex = strings.Replace(ex, "Application.exe", "config.yml", -1)
 
-	var config Config
 	source, err := ioutil.ReadFile(newex)
 
 	if err != nil {
@@ -62,5 +68,5 @@ func Read_Settings(ex string, err error) Config {
 		panic(err)
 	}
 
-	return(config)
+	return config, err
 }

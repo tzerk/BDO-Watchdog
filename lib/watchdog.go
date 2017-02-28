@@ -56,18 +56,27 @@ func Watchdog(
 			// requires elevated rights --> start .exe as administrator
 			if config.KillOnDC {
 
-				proc, err := os.FindProcess(PID)
+				label_Update.SetText("  Trying to kill PID " + strconv.Itoa(PID))
+				time.Sleep(5 * time.Second)
 
+				defer func() {
+					if r := recover(); r != nil {
+						log.Println("  Panicked while trying to kill the process.")
+					}
+				}()
+
+				proc, err := os.FindProcess(PID)
 				if err != nil {
+					label_Update.SetText("  Error: " + err.Error())
 					log.Println(err)
 				}
 
-				defer func() {
-					recover() // 1
-					return
-				}()
 				// Kill the process
-				proc.Kill()
+				err = proc.Kill()
+				if err != nil {
+					label_Update.SetText("  Error: " + err.Error())
+					log.Println(err)
+				}
 
 				time.Sleep(5 * time.Second)
 			}

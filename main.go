@@ -32,7 +32,7 @@ type Config struct {
 }
 
 // Variables
-const VERSION = "0.1.4"
+const VERSION = "0.1.5"
 var STATUS bool = false
 var CONNECTION bool = false
 var PID int

@@ -253,6 +253,7 @@ func observer(
 
 		//// PID
 		//------
+		PID = 0
 		for _, v := range p {
 			if v.Executable() == config.Process {
 				PID = v.Pid()

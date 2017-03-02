@@ -28,6 +28,7 @@ Option | Description
 token | The token is a string along the lines of `AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw` that is required to authorize the bot
 botid | A unique ID of your bot along the lines of `123456789`
 chatid | Unique identifier for the target chat or username of the target supergroup or channel
+timestamp | Append a timestamp to the Telegram message
 message | The message your bot sends in case of a disconnect
 stayalive | By default, the program closes if it has detected a disconnect
 process | The process to be monitored, defaults to `BlackDesert64.exe`

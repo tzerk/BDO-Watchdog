@@ -60,6 +60,7 @@ func main() {
 		box_settings.Append(ui.NewLabel("Token: " + config.Token), false)
 		box_settings.Append(ui.NewLabel("Bot ID: " + config.Botid), false)
 		box_settings.Append(ui.NewLabel("Chat ID: " + config.Chatid), false)
+		box_settings.Append(ui.NewLabel("Timestamp: " + strconv.FormatBool(config.TimeStamp)), false)
 		box_settings.Append(ui.NewLabel("Message: " + config.Message), false)
 		box_settings.Append(ui.NewLabel("Stay alive: " + strconv.FormatBool(config.StayAlive)), false)
 		box_settings.Append(ui.NewLabel("Process: " + config.Process), false)

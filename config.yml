@@ -1,16 +1,18 @@
+## Get updates here: https://github.com/tzerk/BDO-Watchdog/releases/
 ## Telegram Bot Settings
 token: 
 botid: 
 chatid: 
+timestamp: true
 message: BDO disconnected
 
 ## Program Settings
 stayalive: false
 process: BlackDesert64.exe
 timebetweenchecksins: 60
+shutdownondc: false
 
 # These settings require the .exe to be run with admin rights! 
-killondc: false
-shutdownondc: false
+killondc: true
 killcoherentui: false
 

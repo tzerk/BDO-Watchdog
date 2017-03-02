@@ -50,7 +50,7 @@ func Read_Settings(ex string) (config Config, err error) {
 				"token: \r\n" +
 				"botid: \r\n" +
 				"chatid: \r\n" +
-				"timestamp: \r\n" +
+				"timestamp: true\r\n" +
 				"message: BDO disconnected \r\n" +
 				"\r\n" +
 				"## Program Settings\r\n" +

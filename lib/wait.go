@@ -8,7 +8,7 @@ import (
 
 // ---------------------------------------------------------------------------------------------------------------------
 // A wrapper for time.Sleep() that also updates the UI label and progressbar
-func wait(config Config, label_Update *ui.Label, pb *ui.ProgressBar) {
+func wait(config Config, label_Update *ui.Label, pb *ui.ProgressBar, penalty int) {
 	tstep := config.TimeBetweenChecksInS
 	var pbVal int
 
@@ -21,7 +21,8 @@ func wait(config Config, label_Update *ui.Label, pb *ui.ProgressBar) {
 			pbVal = 100
 		}
 		pb.SetValue(pbVal)
-		label_Update.SetText("  Next update in... " + strconv.Itoa(tstep - i) + " s")
+		label_Update.SetText("  Next update in... " + strconv.Itoa(tstep - i) + " s" +
+			" (failed checks: " + strconv.Itoa(penalty) + "/" + strconv.Itoa(config.FailLimit) + ")")
 		time.Sleep(1 * time.Second)
 	}
 	pb.SetValue(0)

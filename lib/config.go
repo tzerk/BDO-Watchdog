@@ -19,6 +19,7 @@ type Config struct {
 	StayAlive bool
 	Process string
 	TimeBetweenChecksInS int
+	FailLimit int
 	KillOnDC bool
 	ShutdownOnDC bool
 	KillCoherentUI bool
@@ -57,6 +58,7 @@ func Read_Settings(ex string) (config Config, err error) {
 				"stayalive: false\r\n" +
 				"process: BlackDesert64.exe\r\n" +
 				"timebetweenchecksins: 60\r\n" +
+				"faillimit: 2\r\n" +
 				"\r\n" +
 				"# These settings require the .exe to be run with admin rights! \r\n" +
 				"killondc: true\r\n" +

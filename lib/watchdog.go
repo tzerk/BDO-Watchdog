@@ -15,6 +15,8 @@ import (
 var STATUS bool = false
 var CONNECTION bool = false
 var PID int
+var PENALTY int
+
 
 //--------------------------------------------------------------------------------------------------------------
 // PROCESS
@@ -44,48 +46,62 @@ func Watchdog(
 		// If the process is running, but no longer connected we trigger the following actions
 		if STATUS && !CONNECTION {
 
-			// Use the Telegram API to send a message
-			Send_TelegramMessage(config)
+			// Only procede with exit routine if we reached the fail threshold
+			if PENALTY >= config.FailLimit {
+				// Use the Telegram API to send a message
+				Send_TelegramMessage(config)
 
-			// Optional: shutdown the computer if the monitored process is disconnected
-			if config.ShutdownOnDC {
-				exec.Command("cmd", "/C", "shutdown", "/s").Run()
-			}
+				// Optional: shutdown the computer if the monitored process is disconnected
+				if config.ShutdownOnDC {
+					exec.Command("cmd", "/C", "shutdown", "/s").Run()
+				}
 
-			// Optional: kill the monitored process if it is disconnected
-			// requires elevated rights --> start .exe as administrator
-			if config.KillOnDC {
+				// Optional: kill the monitored process if it is disconnected
+				// requires elevated rights --> start .exe as administrator
+				if config.KillOnDC {
 
-				label_Update.SetText("  Trying to kill PID " + strconv.Itoa(PID))
-				time.Sleep(5 * time.Second)
+					label_Update.SetText("  Trying to kill PID " + strconv.Itoa(PID))
+					time.Sleep(5 * time.Second)
 
-				defer func() {
-					if r := recover(); r != nil {
-						log.Println("  Panicked while trying to kill the process.")
+					defer func() {
+						if r := recover(); r != nil {
+							log.Println("  Panicked while trying to kill the process.")
+						}
+					}()
+
+					proc, err := os.FindProcess(PID)
+					if err != nil {
+						label_Update.SetText("  Error: " + err.Error())
+						log.Println(err)
 					}
-				}()
 
-				proc, err := os.FindProcess(PID)
-				if err != nil {
-					label_Update.SetText("  Error: " + err.Error())
-					log.Println(err)
+					// Kill the process
+					err = proc.Kill()
+					if err != nil {
+						label_Update.SetText("  Error: " + err.Error())
+						log.Println(err)
+					}
+
+					time.Sleep(5 * time.Second)
 				}
 
-				// Kill the process
-				err = proc.Kill()
-				if err != nil {
-					label_Update.SetText("  Error: " + err.Error())
-					log.Println(err)
+				// Optional (YAML file, default: false): keep ts program open even if
+				// the process is disconnected
+				if !config.StayAlive {
+					os.Exit(1)
 				}
 
-				time.Sleep(5 * time.Second)
+			// The process is running and disconnected, but we haven't reached the threshold yet;
+			// Hence, we increase the penalty counter.
+			} else {
+				PENALTY += 1
 			}
 
-			// Optional (YAML file, default: false): keep ts program open even if
-			// the process is disconnected
-			if !config.StayAlive {
-				os.Exit(1)
-			}
+		}
+
+		// Reset the penalty counter if process is running and disconnected
+		if STATUS && CONNECTION {
+			PENALTY = 0
 		}
 
 		//// PROCESS
@@ -111,7 +127,7 @@ func Watchdog(
 				label_Connection.SetText("  Connection: -" )
 			})
 
-			wait(config, label_Update, pb)
+			wait(config, label_Update, pb, PENALTY)
 			continue
 		} else {
 
@@ -153,6 +169,6 @@ func Watchdog(
 		}
 
 		// Wait x seconds before next iteration
-		wait(config, label_Update, pb)
+		wait(config, label_Update, pb, PENALTY)
 	}
 }

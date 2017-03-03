@@ -100,7 +100,7 @@ func Watchdog(
 		}
 
 		// Reset the penalty counter if process is running and disconnected
-		if STATUS && CONNECTION {
+		if CONNECTION {
 			PENALTY = 0
 		}
 

@@ -85,6 +85,9 @@ func Watchdog(
 					time.Sleep(5 * time.Second)
 				}
 
+				// Use the Telegram API to send a message
+				Send_TelegramMessage(config, label_Update, pb)
+
 				// Optional (YAML file, default: false): keep ts program open even if
 				// the process is disconnected
 				if !config.StayAlive {

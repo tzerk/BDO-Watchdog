@@ -8,7 +8,7 @@ import (
 )
 
 // Variables
-const VERSION = "0.1.5"
+const VERSION = "0.1.8"
 var errmsg string
 
 func main() {
@@ -38,13 +38,14 @@ func main() {
 		box_about := ui.NewVerticalBox()
 		tab := ui.NewTab()
 
+		pb := ui.NewProgressBar()
+
 		tbtn := ui.NewButton("Send Telegram test message")
 		tbtn.OnClicked(func(*ui.Button) {
-			Send_TelegramMessage(config)
+			Send_TelegramMessage(config, label_Update, pb)
 		})
 
 		sep := ui.NewHorizontalSeparator()
-		pb := ui.NewProgressBar()
 
 		// Append all UI elements to the box container
 		box_main.Append(label_Process, false)

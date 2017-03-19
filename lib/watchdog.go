@@ -48,8 +48,6 @@ func Watchdog(
 
 			// Only procede with exit routine if we reached the fail threshold
 			if PENALTY >= config.FailLimit {
-				// Use the Telegram API to send a message
-				Send_TelegramMessage(config, label_Update, pb)
 
 				// Optional: shutdown the computer if the monitored process is disconnected
 				if config.ShutdownOnDC {

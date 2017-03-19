@@ -29,6 +29,11 @@ func Watchdog(
 	label_Update *ui.Label,
 	pb *ui.ProgressBar) {
 
+	// SET Process Priority
+	if (config.ProcessPriority != "normal") {
+		exec.Command("cmd", "/C", "wmic", "process",  "where", "name='" + config.Process + "'", "CALL", "setpriority", config.ProcessPriority).Run()
+	}
+
 	// KILL CoherentUI_Host.exe
 	if config.KillCoherentUI {
 		err := killCoherentUI()
@@ -72,6 +77,7 @@ func Watchdog(
 						label_Update.SetText("  Error: " + err.Error())
 						log.Println(err)
 					}
+
 
 					// Kill the process
 					err = proc.Kill()

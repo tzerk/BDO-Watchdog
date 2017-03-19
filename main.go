@@ -69,6 +69,7 @@ func main() {
 		box_settings.Append(ui.NewLabel("Kill process after disconnect: " + strconv.FormatBool(config.KillOnDC)), false)
 		box_settings.Append(ui.NewLabel("Shutdown PC after disconnect: " + strconv.FormatBool(config.ShutdownOnDC) ), false)
 		box_settings.Append(ui.NewLabel("Kill CoherenUI_Host.exe: " + strconv.FormatBool(config.KillCoherentUI)), false)
+		box_settings.Append(ui.NewLabel("Process Priority: " + config.ProcessPriority), false)
 
 		// Append UI elements for about tab
 		box_about.Append(ui.NewLabel("Version " + VERSION), false)

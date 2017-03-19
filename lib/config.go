@@ -23,6 +23,7 @@ type Config struct {
 	KillOnDC bool
 	ShutdownOnDC bool
 	KillCoherentUI bool
+	ProcessPriority string
 }
 
 func Read_Settings(ex string) (config Config, err error) {
@@ -63,7 +64,11 @@ func Read_Settings(ex string) (config Config, err error) {
 				"# These settings require the .exe to be run with admin rights! \r\n" +
 				"killondc: true\r\n" +
 				"shutdownondc: false\r\n" +
-				"killcoherentui: false"
+				"killcoherentui: false\r\n" +
+				"\r\n" +
+				"# Set the process priority. Allowed values are: idle, below normal, normal, above normal, high priority, realtime\r\n" +
+				"# Also requires admin rights!\r\n" +
+				"processpriority: normal"
 		ioutil.WriteFile("config.yml", []byte(defconf), os.FileMode(int(0777)))
 		panic(err)
 	}

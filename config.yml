@@ -11,9 +11,12 @@ stayalive: false
 process: BlackDesert64.exe
 timebetweenchecksins: 60
 faillimit: 2
-shutdownondc: false
 
 # These settings require the .exe to be run with admin rights! 
 killondc: true
+shutdownondc: false
 killcoherentui: false
 
+# Set the process priority. Allowed values are: idle, below normal, normal, above normal, high priority, realtime
+# Also requires admin rights!
+processpriority: normal

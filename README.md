@@ -8,10 +8,11 @@ A simple Go program that monitors the BlackDesert64.exe process and its network 
 
 ## How it works
 
-0. (optionally) Tries to kill all `CoherentUI_Host.exe` processes (requires admin rights)
-1. Check if the designated [process is currently running](https://github.com/mitchellh/go-ps)
-2. Obtain the process ID (PID)
-3. Run `cmd.exe netstat -aon` and find the PID its output
+1. (optionally) Tries to kill all `CoherentUI_Host.exe` processes (requires admin rights)
+2. (optionally) Changes the CPU process priority on startup (requires admin rights)
+3. Check if the designated [process is currently running](https://github.com/mitchellh/go-ps)
+4. Obtain the process ID (PID)
+5. Run `cmd.exe netstat -aon` and find the PID its output
 
 If the process is running, but its PID is no longer found in the output of `netstat` it then does the following:
 

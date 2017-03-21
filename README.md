@@ -37,6 +37,7 @@ faillimit | Maximum number of failed checks until exit routine is initiated
 shutdownondc | Shut down the computer after the client disconnected
 killondc | Kill the process after it disconnected (requires the executable to be run with admin rights!)
 killcoherentui | Kill all `CoherentUI_Host.exe` processes (requires admin rights)
+processpriority | Set the CPU priority of the process (allowed values: `idle, below normal, normal, above normal, high priority, realtime`) (requires admin rights)
 
 ## Setting up the Telegram Bot
 

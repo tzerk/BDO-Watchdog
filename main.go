@@ -8,7 +8,7 @@ import (
 )
 
 // Variables
-const VERSION = "0.1.8"
+const VERSION = "0.1.9"
 var errmsg string
 
 func main() {

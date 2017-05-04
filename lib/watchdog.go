@@ -16,6 +16,8 @@ var STATUS bool = false
 var CONNECTION bool = false
 var PID int
 var PENALTY int
+var ESTABLISHEDONCE bool = false
+var EXIT bool = false
 
 
 //--------------------------------------------------------------------------------------------------------------
@@ -48,8 +50,19 @@ func Watchdog(
 
 		//// EXIT CONDITION
 		//-----------------
-		// If the process is running, but no longer connected we trigger the following actions
+
+		// Two exit conditions:
+		// a) The process is running, but no longer connected
+		// b) The process was online once, but killed
 		if STATUS && !CONNECTION {
+			EXIT = true
+		}
+		if !STATUS && !CONNECTION && ESTABLISHEDONCE {
+			EXIT = true
+		}
+
+		// If the process is running, but no longer connected we trigger the following actions
+		if EXIT {
 
 			// Only procede with exit routine if we reached the fail threshold
 			if PENALTY >= config.FailLimit {
@@ -61,7 +74,7 @@ func Watchdog(
 
 				// Optional: kill the monitored process if it is disconnected
 				// requires elevated rights --> start .exe as administrator
-				if config.KillOnDC {
+				if config.KillOnDC && PID != 0 {
 
 					label_Update.SetText("  Trying to kill PID " + strconv.Itoa(PID))
 					time.Sleep(5 * time.Second)
@@ -106,6 +119,13 @@ func Watchdog(
 
 		}
 
+		// If the process was observed at least once and was also connected, we also want to notify the user
+		// when the process unexpectedly crashed. We need this to differentiate this case with the case where
+		// BDO-Watchdog was started BEFORE the observed process. We set this flag only once.
+		if STATUS && CONNECTION && !ESTABLISHEDONCE {
+			ESTABLISHEDONCE = true
+		}
+
 		// Reset the penalty counter if process is running and disconnected
 		if CONNECTION {
 			PENALTY = 0
@@ -129,6 +149,7 @@ func Watchdog(
 		if (PID == 0) {
 			ui.QueueMain(func () {
 				STATUS = false
+				CONNECTION = false
 				label_Status.SetText("  Status: not running")
 				label_PID.SetText("  PID: -")
 				label_Connection.SetText("  Connection: -" )

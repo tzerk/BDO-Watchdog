@@ -23,6 +23,7 @@ type Config struct {
 	KillOnDC bool
 	ShutdownOnDC bool
 	KillCoherentUI bool
+	Log bool
 	ProcessPriority string
 }
 
@@ -65,6 +66,7 @@ func Read_Settings(ex string) (config Config, err error) {
 				"killondc: true\r\n" +
 				"shutdownondc: false\r\n" +
 				"killcoherentui: false\r\n" +
+				"log: true\r\n" +
 				"\r\n" +
 				"# Set the process priority. Allowed values are: idle, below normal, normal, above normal, high priority, realtime\r\n" +
 				"# Also requires admin rights!\r\n" +

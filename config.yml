@@ -16,6 +16,7 @@ faillimit: 2
 killondc: true
 shutdownondc: false
 killcoherentui: false
+log: true
 
 # Set the process priority. Allowed values are: idle, below normal, normal, above normal, high priority, realtime
 # Also requires admin rights!

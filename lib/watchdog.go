@@ -64,12 +64,17 @@ func Watchdog(
 		// If the process is running, but no longer connected we trigger the following actions
 		if EXIT {
 
-			// Only procede with exit routine if we reached the fail threshold
+			// Only proceed with exit routine if we reached the fail threshold
 			if PENALTY >= config.FailLimit {
 
 				// Optional: shutdown the computer if the monitored process is disconnected
 				if config.ShutdownOnDC {
 					exec.Command("cmd", "/C", "shutdown", "/s").Run()
+				}
+
+				// Optional: write disconnect msg to log file
+				if config.Log {
+					logger("Process (PID " + strconv.Itoa(PID) + ") disconnected\r\n")
 				}
 
 				// Optional: kill the monitored process if it is disconnected

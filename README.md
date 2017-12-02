@@ -17,6 +17,7 @@ A simple Go program that monitors the BlackDesert64.exe process and its network 
 If the process is running, but its PID is no longer found in the output of `netstat` it then does the following:
 
 - Send a Telegram message using a [URL query string](https://core.telegram.org/bots/api#making-requests)
+- (optionally) writes the time of disconnect in a log file
 - (optionally) tries to kill the process (requires admin rights)
 - (optionally) shuts down the computer (`cmd /C shutdown /s`)
 
@@ -38,6 +39,7 @@ faillimit | Maximum number of failed checks until exit routine is initiated
 shutdownondc | Shut down the computer after the client disconnected
 killondc | Kill the process after it disconnected (requires the executable to be run with admin rights!)
 killcoherentui | Kill all `CoherentUI_Host.exe` processes (requires admin rights)
+log | Write a simple log file with timestamps (`log.txt` file)
 processpriority | Set the CPU priority of the process (allowed values: `idle, below normal, normal, above normal, high priority, realtime`) (requires admin rights)
 
 ## Setting up the Telegram Bot

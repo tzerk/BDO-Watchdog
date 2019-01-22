@@ -1,4 +1,4 @@
-# BDO Watchdog
+# BDO Watchdog <a href='#'><img src='logo.png' align="right" height="138.5" /></a>
 
 A simple Go program that monitors the BlackDesert64.exe process and its network status. If the process disconnects it sends a custom Telegram message and optionally kills the process or turns off the computer.
 
